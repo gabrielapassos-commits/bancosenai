@@ -9,5 +9,11 @@ namespace BancoSENAIAPI.Controllers
         private readonly string _caminhoRaiz = Path.Combine(Directory.GetCurrentDirectory(), "clienteArquivo");
         private static List<Models.DocumentoMetadados> _documentosMetadados = new List<Models.DocumentoMetadados>();
         private static int _nextId = 1;
+
+        [HttpPost("upload/{codigoCliene}")]
+        public async Task<IActionResult> AnexarArquivo(int codigoCliente, IFormFile arquivo) 
+        {
+        
+        }
     }
 }
