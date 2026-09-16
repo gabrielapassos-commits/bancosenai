@@ -10,14 +10,17 @@ namespace BancoSENAIAPI.Controllers
         private static List<Models.DocumentoMetadados> _documentosMetadados = new List<Models.DocumentoMetadados>();
         private static int _nextId = 1;
 
-        [HttpPost("upload/{codigoCliene}")]
+        [HttpPost("upload/{codigoCliente}")]
         public async Task<IActionResult> AnexarArquivo(int codigoCliente, IFormFile arquivo) 
         {
             if (arquivo == null || arquivo.Length == 0)
             {
                 return BadRequest("Nenhum arquivo foienviado.");
             }
-            
+            if (arquivo.Length > 2 * 1024 * 1024)
+            {
+                return BadRequest("O arquivo não pode ter mais de 2 MB.");
+            }
 
             string pastaCliente = Path.Combine(_caminhoRaiz, codigoCliente.ToString());
 
@@ -27,7 +30,7 @@ namespace BancoSENAIAPI.Controllers
             }
 
             string extensao = Path.GetExtension(arquivo.FileName);
-
+           
             string nomeOriginal = Path.GetFileNameWithoutExtension(arquivo.FileName);
             string novoNome = $"{codigoCliente}_{nomeOriginal}_{Guid.NewGuid()}{extensao}";
             string caminhoFinal = Path.Combine(pastaCliente, novoNome);
