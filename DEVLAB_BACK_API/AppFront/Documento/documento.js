@@ -1,5 +1,4 @@
-const URL_API = 'https://localhost:7081/api/v1/Documento'
-
+const URL_API = 'https://localhost:7081/api/v1/Documento';
 async function enviarDocumento() {
     const codigoCliente = document.getElementById("codigoCliente").value;
     const inputArquivo = document.getElementById("arquivo");
@@ -12,24 +11,19 @@ async function enviarDocumento() {
     const dadosArquivos = new FormData();
     dadosArquivos.append("arquivo", arquivo);
 
-    const response = await fetch(`${URL_API}/upload/${codigoCliente}`, {
+    const response = await fetch(${ URL_API } / upload / ${ codigoCliente }, {
         method: "POST",
         body: dadosArquivos
-
     });
     if (response.ok) {
         alert("Documento enviado com sucesso");
         document.getElementById("codigoCliente").value = "";
         document.getElementById("arquivo").value = "";
+    } else {
+        alert("Falha ao enviar o arquivo");
     }
-    else {
-        const erro = await response.json();
-        console.log(error);
-        alert("Falha ao enviar o documento");
-    }
-
 }
-async function listarDocumento() {
+async function listarDocumentos() {
 
     const codigoCliente = document.getElementById("codigoCliente").value;
 
@@ -38,7 +32,7 @@ async function listarDocumento() {
         return;
     }
 
-    const response = await fetch(`${URL_API}/listar/${codigoCliente}`);
+    const response = await fetch(${ URL_API } / listar / ${ codigoCliente });
 
     if (response.ok) {
 
@@ -52,9 +46,17 @@ async function listarDocumento() {
 
             linha.innerHTML = `
                 <td>${documento.id}</td>
-                <td>${documento.nome}</td>
+                <td>${documento.name}</td>
                 <td>${documento.extensao}</td>
-                <td>Ações</td>
+                <td>
+                <button onclick="baixarDocumento(${documento.id})">
+                Download
+                </button>
+                <button onclick="excluirDocumento(${documento.id})">
+                Excluir
+                </button>
+                </td>
+
             `;
 
             corpoTabela.appendChild(linha);
@@ -64,5 +66,50 @@ async function listarDocumento() {
 
         alert("Nenhum documento foi encontrado para este cliente");
 
+    }
+}
+async function baixarDocumento(id) {
+
+    const response = await fetch(${ URL_API } / download / ${ id });
+
+    if (response.ok) {
+
+        const arquivo = await response.blob();
+
+        const url = window.URL.createObjectURL(arquivo);
+
+        const link = document.createElement("a");
+
+        link.href = url;
+        link.download = documento - ${ id };
+
+        link.click();
+
+        window.URL.revokeObjectURL(url);
+
+    } else {
+
+        alert("Não foi possível baixar o documento");
+
+    }
+}
+async function excluirDocumento(id) {
+
+    const confirmar = confirm("Tem certeza que deseja excluir este documento?");
+
+    if (!confirmar) {
+        return;
+    }
+
+    const response = await fetch(${ URL_API } / excluir / ${ id }, {
+        method: "DELETE"
+    });
+
+    if (response.ok) {
+        alert("Documento excluído com sucesso");
+
+        listarDocumentos();
+    } else {
+        alert("Não foi possível excluir o documento");
     }
 }
