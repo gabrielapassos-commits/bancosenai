@@ -11,10 +11,11 @@ async function enviarDocumento() {
     const dadosArquivos = new FormData();
     dadosArquivos.append("arquivo", arquivo);
 
-    const response = await fetch(${ URL_API } / upload / ${ codigoCliente }, {
+    const response = await fetch(`${URL_API}/upload/${codigoCliente}`, {
         method: "POST",
         body: dadosArquivos
     });
+
     if (response.ok) {
         alert("Documento enviado com sucesso");
         document.getElementById("codigoCliente").value = "";
@@ -23,6 +24,7 @@ async function enviarDocumento() {
         alert("Falha ao enviar o arquivo");
     }
 }
+
 async function listarDocumentos() {
 
     const codigoCliente = document.getElementById("codigoCliente").value;
@@ -32,7 +34,7 @@ async function listarDocumentos() {
         return;
     }
 
-    const response = await fetch(${ URL_API } / listar / ${ codigoCliente });
+    const response = await fetch(`${URL_API}/listar/${codigoCliente}`);
 
     if (response.ok) {
 
@@ -70,7 +72,7 @@ async function listarDocumentos() {
 }
 async function baixarDocumento(id) {
 
-    const response = await fetch(${ URL_API } / download / ${ id });
+    const response = await fetch(`${URL_API}/download /${id}`);
 
     if (response.ok) {
 
@@ -81,7 +83,7 @@ async function baixarDocumento(id) {
         const link = document.createElement("a");
 
         link.href = url;
-        link.download = documento - ${ id };
+        link.download = `documento/${id}`;
 
         link.click();
 
@@ -101,7 +103,7 @@ async function excluirDocumento(id) {
         return;
     }
 
-    const response = await fetch(${ URL_API } / excluir / ${ id }, {
+    const response = await fetch(`${ URL_API }/excluir/${ id }`, {
         method: "DELETE"
     });
 
