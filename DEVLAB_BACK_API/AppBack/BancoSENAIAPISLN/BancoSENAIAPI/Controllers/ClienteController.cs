@@ -16,10 +16,6 @@ namespace BancoSENAIAPI.Controllers
                 CPF = "123.456.789-00",
                 NumeroAgencia = 10,
                 SaldoTotal = 0,
-                Sexo = "M",
-                Endereco = "Rua A, 123",
-                Cidade = "São Paulo",
-                Estado = "SP"
             }
         };
 
@@ -74,10 +70,6 @@ namespace BancoSENAIAPI.Controllers
             clienteExistente.CPF = clienteAtualizado.CPF;
             clienteExistente.NumeroAgencia = clienteAtualizado.NumeroAgencia;
             clienteExistente.SaldoTotal = clienteAtualizado.SaldoTotal;
-            clienteExistente.Sexo = clienteAtualizado.Sexo;
-            clienteExistente.Endereco = clienteAtualizado.Endereco;
-            clienteExistente.Cidade = clienteAtualizado.Cidade;
-            clienteExistente.Estado = clienteAtualizado.Estado;
 
             return NoContent();
         }
